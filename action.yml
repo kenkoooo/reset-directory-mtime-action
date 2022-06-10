@@ -1,0 +1,14 @@
+# action.yml
+name: 'reset-directory-mtime'
+description: 'Recursively reset the directory's modified time based on the files in the directory'
+inputs:
+  working-directory:
+    description: 'Root directory to reset the modified time'
+    required: true
+    default: '.'
+outputs:
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.working-directory }}
