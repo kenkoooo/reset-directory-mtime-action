@@ -7,7 +7,7 @@ inputs:
     required: true
     default: '.'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'node12'
+  main: 'dist/index.js'
   args:
     - ${{ inputs.working-directory }}

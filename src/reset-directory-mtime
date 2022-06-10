@@ -1,0 +1,29 @@
+from genericpath import getmtime, isdir
+from os import listdir, utime
+import sys
+
+
+def reset_directory_mtime(directory: str) -> float:
+    directory_mtime = 0.0
+    for entry in listdir(directory):
+        if isdir(entry):
+            mtime = reset_directory_mtime(directory=entry)
+            directory_mtime = max(directory_mtime, mtime)
+        else:
+            mtime = getmtime(entry)
+            directory_mtime = max(directory_mtime, mtime)
+
+    utime(path=directory, times=(directory_mtime, directory_mtime))
+    return directory_mtime
+
+
+if __name__ == "__main__":
+    args = sys.argv
+    if len(args) < 2:
+        raise Exception("working-directory is not specified")
+
+    working_directory = args[1]
+    if not isdir(working_directory):
+        raise Exception(f"{working_directory} is not a directory")
+
+    reset_directory_mtime(directory=working_directory)
